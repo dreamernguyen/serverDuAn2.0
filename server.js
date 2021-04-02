@@ -21,7 +21,7 @@ const PORT = process.env.PORT || 5000;
 const app = express();
 
 const databaseURL =
-  "mongodb+srv://nhannbt:nhanne@cluster0-hw1yh.mongodb.net/dbYoKaFo?retryWrites=true&w=majority";
+  "mongodb+srv://nhannbt:nhanne@cluster0-hw1yh.mongodb.net/dbSafaco?retryWrites=true&w=majority";
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
