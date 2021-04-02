@@ -65,15 +65,12 @@ export async function danhSachDangTheoDoi(req, res) {
         mang.sort(function (a, b) {
           return a.thoiGianTao - b.thoiGianTao;
         });
-        console.log(`Mảng cuối :${mang}`);
         res.send({ danhSachBaiViet: mang });
       } else {
         res.send({ danhSachBaiViet: [] });
-        console.log("Chưa theo dõi người nào");
       }
     } else {
       res.send({ thongBao: "Không tìm thấy người dùng" });
-      console.log("Không tìm thấy người dùng");
     }
   } catch (error) {
     console.log(error);
