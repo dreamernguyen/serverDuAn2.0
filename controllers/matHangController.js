@@ -86,7 +86,6 @@ export async function danhSachMatHang(req, res) {
         res.send({
           danhSachMatHang: danhSachMatHang,
         });
-        console.log(danhSachMatHang)
       });
     
   } catch (error) {
