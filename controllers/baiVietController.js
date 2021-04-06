@@ -88,7 +88,7 @@ export async function xoaBaiViet(req, res) {
           daXoa: true,
         },
       };
-      await BaiViet.updateOne({ _id: req.params.id }, anBai);
+      await BaiViet.updateOne({ _id: req.params.id }, xoaBai);
       res.send({
         thongBao: `Xóa bài viết thành công !`,
       });
