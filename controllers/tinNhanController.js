@@ -58,7 +58,6 @@ export async function danhSachLienHe(req, res) {
       mangCuoi.forEach((value, index) => {
         value._id == idNguoiDung ? mangCuoi.splice(index, 1) : null;
       });
-      console.log(mangCuoi);
       res.send(mangCuoi);
     })
     .catch((err) => {
