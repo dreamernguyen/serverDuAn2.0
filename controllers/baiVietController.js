@@ -310,7 +310,6 @@ export async function danhSachBaiVietYeuThich(req, res) {
     if (nguoiDung) {
       const rs = await BaiViet.find({ luotThich: { $all: nguoiDung._id } });
       if (rs.length > 0) {
-        console.log(rs);
         res.send({ danhSachBaiViet: rs });
       } else {
         res.send({ thongBao: `Chưa yêu thích bài viết nào ` });
