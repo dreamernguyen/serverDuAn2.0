@@ -83,12 +83,7 @@ export async function xoaBaiViet(req, res) {
   try {
     const baiViet = await BaiViet.findById(req.params.id);
     if (baiViet) {
-      const xoaBai = {
-        $set: {
-          daXoa: true,
-        },
-      };
-      await BaiViet.updateOne({ _id: req.params.id }, xoaBai);
+      await BaiViet.findByIdAndDelete({ _id: req.params.id });
       res.send({
         thongBao: `Xóa bài viết thành công !`,
       });
