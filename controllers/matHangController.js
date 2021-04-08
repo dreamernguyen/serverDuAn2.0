@@ -166,13 +166,19 @@ export async function timKiem(req, res) {
     const hangMuc = req.body.hangMuc;
     const tieuDe = req.body.tieuDe;
     const diaChi = req.body.diaChi;
-    // const sapXep  = req.body.sapXep;
+    const sapXepThoiGian  = req.body.sapXepThoiGian;
+    const sapXepGiaBan = req.body.sapXepGiaBan;
     await MatHang.find({
       hangMuc: { $regex: hangMuc, $options: "i" },
       tieuDe: { $regex: tieuDe, $options: "i" },
       diaChi: { $regex: diaChi, $options: "i" },
-    }).sort({thoiGianCapNhat: "",giaBan : 1})
+    }).sort({thoiGianCapNhat: sapXepThoiGian,giaBan : sapXepGiaBan})
       .then((result) => {
+      console.log(`hangMuc : ${hangMuc}`);
+      console.log(`tieuDe : ${tieuDe}`);
+      console.log(`diaChi : ${diaChi}`);
+      console.log(`sxThoiGian : ${sapXepThoiGian}`);
+      console.log(`sxGiaBan : ${sapXepGiaBan}`);
         res.send({
           thongBao: `Kết quả tìm kiếm với hạng mục : ${hangMuc}, tiêu đề : ${tieuDe}, địa chỉ : ${diaChi} `,
           danhSachMatHang: result,
