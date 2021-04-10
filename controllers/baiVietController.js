@@ -308,7 +308,7 @@ export async function danhSachBaiVietYeuThich(req, res) {
   try {
     const nguoiDung = await NguoiDung.findById(req.params.id);
     if (nguoiDung) {
-      const rs = await BaiViet.find({ luotThich: { $all: nguoiDung._id } });
+      const rs = await BaiViet.find({ luotThich: { $all: nguoiDung } });
       if (rs.length > 0) {
         res.send({ danhSachBaiViet: rs });
       } else {
