@@ -1,5 +1,5 @@
 import express from "express";
-import { dangKy, dangNhapBangGoogle, dangNhapBangSoDienThoai, danhSachNguoiDung, huyTheoDoi, theoDoi, xemTrangCaNhan } from "../controllers/nguoiDungController.js";
+import { chinhSuaThongTin, dangKy, dangNhapBangGoogle, dangNhapBangSoDienThoai, danhSachNguoiDung, doiMatKhau, huyTheoDoi, theoDoi, xemTrangCaNhan } from "../controllers/nguoiDungController.js";
 
 const router = express.Router();
 
@@ -10,6 +10,7 @@ router.get("/danhSach",danhSachNguoiDung);
 router.get("/xemTrangCaNhan/:id",xemTrangCaNhan);
 router.post("/theoDoi", theoDoi);
 router.post("/huyTheoDoi", huyTheoDoi);
-
+router.post("/chinhSuaThongTin/:id",chinhSuaThongTin);
+router.post("/doiMatKhau/:id",doiMatKhau)
 
 export default router;

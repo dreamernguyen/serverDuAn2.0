@@ -65,12 +65,15 @@ export async function danhSachDangTheoDoi(req, res) {
         mang.sort(function (a, b) {
           return a.thoiGianTao - b.thoiGianTao;
         });
+        console.log(`Mảng cuối :${mang}`);
         res.send({ danhSachBaiViet: mang });
       } else {
         res.send({ danhSachBaiViet: [] });
+        console.log("Chưa theo dõi người nào");
       }
     } else {
       res.send({ thongBao: "Không tìm thấy người dùng" });
+      console.log("Không tìm thấy người dùng");
     }
   } catch (error) {
     console.log(error);
@@ -273,9 +276,9 @@ export async function baoCaoBaiViet(req, res) {
       await BaiViet.updateOne(
         { _id: idBaiViet },
         {
-          $push: { anBaiVoi: idNguoiBaoCao } ,
-          $inc: { baoCao : 1 } 
-        }  
+          $push: { anBaiVoi: idNguoiBaoCao },
+          $inc: { baoCao: 1 },
+        }
       );
       if (nguoiBaoCao) {
         const thongBaoAdmin = new ThongBao({
@@ -307,12 +310,21 @@ export async function baoCaoBaiViet(req, res) {
 export async function danhSachBaiVietYeuThich(req, res) {
   try {
     const nguoiDung = await NguoiDung.findById(req.params.id);
+    console.log(req.params.id);
     if (nguoiDung) {
-      const rs = await BaiViet.find({ luotThich: { $all: nguoiDung._id } });
+      const rs = await BaiViet.find({
+        luotThich: { $all: nguoiDung._id },
+        daAn: false,
+        daXoa: false,
+      }).populate("idNguoiDung luotThich");
+      console.log(rs);
       if (rs.length > 0) {
         res.send({ danhSachBaiViet: rs });
       } else {
-        res.send({ thongBao: `Chưa yêu thích bài viết nào ` });
+        res.send({
+          thongBao: `Chưa yêu thích bài viết nào `,
+          danhSachBaiViet: [],
+        });
       }
     } else {
       console.log("Không tìm thấy người dùng");

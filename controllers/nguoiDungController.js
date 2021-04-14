@@ -1,7 +1,6 @@
 import NguoiDung from "../models/nguoiDung.js";
 import BaiViet from "../models/baiViet.js";
 
-
 export async function dangKy(req, res) {
   const nguoiDungMoi = new NguoiDung(req.body);
   try {
@@ -54,7 +53,6 @@ export async function dangNhapBangSoDienThoai(req, res) {
     throw new Error(`Đăng nhập thất bại ! \nChi tiết lỗi : ${err}`);
   }
 }
-
 export async function dangNhapBangGoogle(req, res) {
   const email = req.body.email;
   const nguoiDungMoi = new NguoiDung(req.body);
@@ -63,13 +61,13 @@ export async function dangNhapBangGoogle(req, res) {
     if (nguoiDung) {
       res.send({
         thongBao: "Email này đã được liên kết !",
-        nguoiDung : nguoiDung
+        nguoiDung: nguoiDung,
       });
     } else {
       nguoiDungMoi.save();
       res.send({
         thongBao: "Email này chưa được liên kết !",
-        nguoiDung : nguoiDungMoi
+        nguoiDung: nguoiDungMoi,
       });
     }
   } catch (err) {
@@ -77,9 +75,6 @@ export async function dangNhapBangGoogle(req, res) {
     throw new Error(`Đăng nhập Google thất bại ! \nChi tiết lỗi : ${err}`);
   }
 }
-
-
-
 export async function danhSachNguoiDung(req, res) {
   await NguoiDung.find()
     .then((list) => {
@@ -100,7 +95,8 @@ export async function xemTrangCaNhan(req, res) {
     if (nguoiDung) {
       const danhSachBaiViet = await BaiViet.find({
         idNguoiDung: req.params.id,
-        daAn: false,daXoa : false
+        daAn: false,
+        daXoa: false,
       }).populate("idNguoiDung luotThich");
       res.send({
         nguoiDung: nguoiDung,
@@ -110,11 +106,10 @@ export async function xemTrangCaNhan(req, res) {
       res.send({ thongBao: "Không tìm thấy người dùng" });
     }
   } catch (error) {
-    console.log(error)
-    throw new Error(`Lỗi xem trang cá nhân !\nChi tiết lỗi ${error}`); ;
+    console.log(error);
+    throw new Error(`Lỗi xem trang cá nhân !\nChi tiết lỗi ${error}`);
   }
 }
-
 export async function theoDoi(req, res) {
   try {
     const nguoiTheoDoi = await NguoiDung.findById(req.body.idNguoiTheoDoi);
@@ -143,15 +138,16 @@ export async function theoDoi(req, res) {
       res.send({ thongBao: "Không tìm thấy người theo dõi" });
     }
   } catch (error) {
-    console.log(error)
+    console.log(error);
     throw new Error(`Theo dõi thất bại !\nChi tiết lỗi ${error}`);
   }
 }
-
 export async function huyTheoDoi(req, res) {
   try {
     const nguoiTheoDoi = await NguoiDung.findById(req.body.idNguoiTheoDoi);
-    const nguoiDuocTheoDoi = await NguoiDung.findById(req.body.idNguoiDuocTheoDoi);
+    const nguoiDuocTheoDoi = await NguoiDung.findById(
+      req.body.idNguoiDuocTheoDoi
+    );
     if (nguoiTheoDoi) {
       console.log(`Người theo dõi :${nguoiTheoDoi.dangTheoDoi}`);
       if (nguoiDuocTheoDoi) {
@@ -180,4 +176,64 @@ export async function huyTheoDoi(req, res) {
     throw new Error(`Hủy theo dõi thất bại !\nChi tiết lỗi ${error}`);
   }
 }
+export async function chinhSuaThongTin(req, res) {
+  try {
+    const nguoiDung = await NguoiDung.findById(req.params.id);
+    if (!nguoiDung) {
+      res.send({
+        thongBao: "Người dùng không tồn tại !",
+      });
+    } else {
+      const capNhat = {
+        $set: {
+          hoTen: req.body.hoTen,
+          tieuSu: req.body.tieuSu,
+          ngaySinh: req.body.ngaySinh,
+          gioiTinh: req.body.gioiTinh,
+          diaChi: req.body.diaChi,
+        },
+      };
+      await NguoiDung.updateOne({ _id: req.params.id }, capNhat);
+      res.send({
+        thongBao: "Cập nhật người dùng thành công !",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Cập nhật người dùng thất bại ! \nChi tiết lỗi : ${error}`);
+  }
+}
 
+export async function doiMatKhau(req, res) {
+  try {
+    const matKhauCu = req.body.matKhauCu;
+    const matKhauMoi = req.body.matKhauMoi;
+    const nguoiDung = await NguoiDung.findById(req.params.id);
+    if (!nguoiDung) {
+      res.send({
+        thongBao: "Người dùng không tồn tại !",
+      });
+    } else {
+      if(matKhauCu === nguoiDung.matKhau){
+        await NguoiDung.updateOne(
+          { _id: req.params.id },
+          {
+            $set: {
+              matKhau: matKhauMoi,
+            },
+          }
+        );
+        res.send({
+          thongBao: "Đổi mật khẩu thành công !",
+        });
+      }else{
+        res.send({
+          thongBao: "Mật khẩu cũ không trùng khớp !",
+        });
+      }
+    }
+  } catch (error) {
+    console.log(error);
+    throw new Error(`Đổi mật khẩu thất bại ! \nChi tiết lỗi : ${error}`);
+  }
+}

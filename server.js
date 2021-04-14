@@ -91,10 +91,8 @@ io.on("connection", (socket) => {
             })
             tb.save();
             io.emit("thongBaoMoi", tb);
-            console.log(`Có thông báo mới cho ${rs.idNguoiDung.hoTen}`);
           }else{
             io.emit("thongBaoMoi", rs);
-            console.log(`Có thông báo mới cho ${rs.idNguoiDung.hoTen}`);
           }
         });
     }

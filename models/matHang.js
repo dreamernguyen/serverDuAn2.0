@@ -23,6 +23,12 @@ const matHangSchema = mongoose.Schema(
       type: String,
     },
     linkAnh: [],
+    nguoiQuanTam :  [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'NguoiDung',
+      },
+    ],
     daDuyet: {
       type: Boolean,
       default: false,
